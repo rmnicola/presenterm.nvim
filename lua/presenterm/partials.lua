@@ -62,11 +62,8 @@ end
 function M.find_partials()
   local cfg = config.get()
 
-  -- Find _partials directory relative to current file's git root
-  local root_dir = vim.fn.system('git rev-parse --show-toplevel 2>/dev/null'):gsub('\n', '')
-  if root_dir == '' then
-    root_dir = vim.fn.getcwd()
-  end
+  -- Always use current working directory
+  local root_dir = vim.fn.getcwd()
 
   local partials_dir = root_dir .. '/' .. cfg.partials.directory
   if vim.fn.isdirectory(partials_dir) ~= 1 then
@@ -110,7 +107,7 @@ function M.find_partials()
       name = name_without_ext,
       title = title,
       path = filepath,
-      relative_path = '../' .. cfg.partials.directory .. '/' .. filename,
+      relative_path = './' .. cfg.partials.directory .. '/' .. filename,
       preview = table.concat(preview_lines, ' '):sub(1, 100),
       preview_lines = preview_lines,
     })
